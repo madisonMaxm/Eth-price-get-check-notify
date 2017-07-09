@@ -16,7 +16,7 @@ price = float(ascii_price[1:])
 
 def compare_price():
 	if price <= config.lower_limit or price >= config.upper_limit:
-		return true
+		return True
 		
 #sends email from email in config file to same email
 def send_email(address, password):
@@ -31,9 +31,9 @@ def send_email(address, password):
    
 if __name__ == '__main__':
     try:
-       parse_price()
-      
-       send_email(config.email_address, config.password)
+        parse_price()
+        if compare_price():
+            send_email(config.email_address, config.password)
 
     except:
 		pass

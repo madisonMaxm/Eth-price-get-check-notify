@@ -6,7 +6,6 @@ import sys
 import os
 import smtplib
 import config
-import smtplib
 
 # Coinmarket Cap ETH
 search_url = 'https://coinmarketcap.com/currencies/ethereum/'

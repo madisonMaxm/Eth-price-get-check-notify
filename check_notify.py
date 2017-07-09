@@ -2,8 +2,6 @@
 
 from bs4 import BeautifulSoup
 import urllib2
-import sys
-import os
 import smtplib
 import config
 

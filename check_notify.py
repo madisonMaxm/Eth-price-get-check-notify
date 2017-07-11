@@ -21,11 +21,13 @@ def parse_price():
     return price
 
 def compare_price(value):
+    evaluate = False
     if value <= config.lower_limit or value >= config.upper_limit:
-        return True
-		
+        evaluate = True
+    return evaluate
+
 #sends email from email in config file to same email
-def send_email(address, password):
+def send_email(address, password, price):
     server = smtplib.SMTP('smtp.gmail.com', 587)
     server.ehlo()
     server.starttls()
@@ -34,15 +36,16 @@ def send_email(address, password):
     msg = "The price of ETH is outside your limit $" + str(price) + "."
     server.sendmail(address, address, msg)
     server.quit()
-   
+
 if __name__ == '__main__':
     
     while run:
-        price = parse_price()
         try:
-            if compare_price(price):
-                send_email(config.email_address, config.password)
-                time.sleep(1800) #code only runs once every half an hour
+            current_price = parse_price()
+            if compare_price(current_price):
+                send_email(config.email_address, config.password, current_price)
+                print "Log: email sent"
+                time.sleep(3600) #code only runs once every half an hour
 
         except:
             print("Error. Program exiting")

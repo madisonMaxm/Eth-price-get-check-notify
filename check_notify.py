@@ -3,21 +3,29 @@ import config
 import smtplib
 import time
 import urllib2
+import sys
+import traceback
 
 from bs4 import BeautifulSoup
 
 # Coinmarket Cap ETH
 search_url = 'https://coinmarketcap.com/currencies/ethereum/'
-content = urllib2.urlopen(search_url).read()
-soup = BeautifulSoup(content, "lxml")
 
 run = True
 
 #returns price as float
 def parse_price():
+    content = urllib2.urlopen(search_url).read()
+    soup = BeautifulSoup(content, "lxml")
+
+    #convert text from unicode to float with 2 degrees of precision
     str_price = soup.find(id = 'quote_price').getText()
-    ascii_price = (str_price.encode('ascii'))
-    price = float(ascii_price[1:])
+    price = int(float(str_price[1:].encode('utf-8'))*100)/100.0
+    
+    #print type(price)
+    print "Log: $%.2f" % (price)
+    
+    soup.decompose()
     return price
 
 def compare_price(value):
@@ -41,12 +49,20 @@ if __name__ == '__main__':
     
     while run:
         try:
-            current_price = parse_price()
-            if compare_price(current_price):
-                send_email(config.email_address, config.password, current_price)
-                print "Log: email sent"
-                time.sleep(3600) #code only runs once every half an hour
+            iterate = 0
+            current_price = []
+            current_price.append(parse_price())
+
+            if compare_price(current_price[iterate]):
+                send_email(config.email_address, config.password, current_price[iterate])
+
+                iterate += 1
+
+                print "email sent"
+        
+            time.sleep(30) #code only runs once every half an hour
 
         except:
-            print("Error. Program exiting")
+            print("Error. Script aborted.")
+            traceback.print_exc()
             run = False

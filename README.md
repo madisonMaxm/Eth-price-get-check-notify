@@ -1,7 +1,4 @@
-# Eth-price-get-check-notify
+# cryptocurrency-price-check-notify
 
-For those of us not using GDAX to invest/ trade ETH, this script serves to automate 
-the process of checking prices and remove the need to obsessively manually check.
-
-After setting user parameters in the .config file, you will be notified in your email when
-the price of ETH reaches your set limit.
+This script serves to automate the the process of price checking any currencies listed on coinmarketcap.com. An exchange API is not used, as some currencies may be found on one popular exchange but not another.
+After setting user parameters in the .config file, you will be notified in your email when the price of your cryptocurrency of interest falls outside of your set range.

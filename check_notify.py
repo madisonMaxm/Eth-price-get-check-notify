@@ -49,18 +49,15 @@ if __name__ == '__main__':
     
     while run:
         try:
-            iterate = 0
-            current_price = []
-            current_price.append(parse_price())
-
-            if compare_price(current_price[iterate]):
-                send_email(config.email_address, config.password, current_price[iterate])
-
-                iterate += 1
+            
+            current_price = parse_price()
+            
+            if compare_price(current_price):
+                send_email(config.email_address, config.password, current_price)
 
                 print "email sent"
         
-            time.sleep(30) #code only runs once every half an hour
+            time.sleep(60) #code only runs once every half an hour
 
         except:
             print("Error. Script aborted.")
